@@ -10,6 +10,9 @@
         <!-- Status bar stuff. -->
         <item name="android:windowLightStatusBar">true</item>
 
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
     </style>
 
 </resources>

@@ -1,11 +1,14 @@
 package gr.fragment.projectwalnut.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         gr.fragment.projectwalnut.Core.System.init(this);
 
-        for (int i=0; i < 4; i++){
+        for (int i=0; i < 5; i++){
             items.add(new Entrance("", "Stayros entered the house", "Sun 14 Sept 17:32", "Stayros Kiagias"));
         }
 
@@ -69,6 +72,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }));
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    // Scrolling up
+                    Intent i = new Intent(MainActivity.this, EventsActivity.class);
+                    startActivity(i);
+                }
+                else {
+                    // Scrolling down
+
+                }
+            }
+        });
+
     }
 
     private void system_change(boolean armed){
