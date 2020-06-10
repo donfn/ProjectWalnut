@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Webcam</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container d-flex align-items-center">
+        <div class="row" style="height: 100vh; width: 100vw;">
+          <div class="col-6 my-auto">
+            <h1>
+              Σύστημα ασφαλείας
+            </h1>
+            <h5>Παρακαλώ εισάγετε τον κωδικό πρόσβασης,</h5>
+            <h5>Ο συναγερμός θα ηχήσει σε <b><span id="seconds">60</span></b> δευτερόλεπτα</h5>
+          </div>
+          <div class="col-5 my-auto">
+            <div class="form-group">
+              <label for="exampleInputPassword1">
+                Κωδικός πρόσβασης
+              </label>
+              <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- <div id="my_camera">Click to resume video</div> -->
+
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    require('renderer.js')
+    require("./node_modules/bootstrap/dist/js/bootstrap.min.js")
+  </script>
+</html>
