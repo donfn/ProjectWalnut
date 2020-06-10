@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="background">#fff</color>
+    <color name="accent_1">#fafafa</color>
+    <color name="accent_2">#eaeaea</color>
+    <color name="accent_3">#999</color>
+    <color name="accent_4">#888</color>
+    <color name="accent_5">#666</color>
+    <color name="accent_6">#444</color>
+    <color name="accent_7">#333</color>
+    <color name="accent_8">#111</color>
+    <color name="foreground">#000</color>
+
+    <color name="error_light">#FF1A1A</color>
+    <color name="error_default">#E00</color>
+    <color name="error_dark">#C00</color>
+
+    <color name="success_light">#3291FF</color>
+    <color name="success_default">#0070F3</color>
+    <color name="success_dark">#0366D6</color>
+
+    <color name="warning_light">#F7B955</color>
+    <color name="warning_default">#F5A623</color>
+    <color name="warning_dark">#F49B0B</color>
+
+    <color name="highlight_alert">#FF0080</color>
+    <color name="highlight_purple">#F81CE5</color>
+    <color name="highlight_violet">#7928CA</color>
+    <color name="highlight_cyan">#79FFE1</color>
+
 </resources>
