@@ -1,4 +1,4 @@
-# ProjecWalnut
+# ProjectWalnut
 
 Security system.
  - Server-side witten in Node.js (Electron)
