@@ -1,5 +1,1 @@
-.nuxt
-dist
-build/*
-!build/icons
 node_modules
