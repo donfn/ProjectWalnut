@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/single_event_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_centerVertical="true"
+        android:src="@color/highlight_purple" />
+
+    <TextView
+        android:id="@+id/single_event_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/single_event_image"
+        android:text="Stayros Kiagias has just entered the house"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/single_event_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12:47"
+        android:layout_toEndOf="@id/single_event_image"
+        android:layout_below="@id/single_event_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>
