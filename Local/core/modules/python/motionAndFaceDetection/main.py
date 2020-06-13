@@ -1,39 +1,12 @@
-# -*- coding: utf-8 -*-
-"""
-OpenCV Motion Detector
-@author: methylDragon
-
-                                   .     .
-                                .  |\-^-/|  .
-                               /| } O.=.O { |\
-                              /´ \ \_ ~ _/ / `\
-                            /´ |  \-/ ~ \-/  | `\
-                            |   |  /\\ //\  |   |
-                             \|\|\/-""-""-\/|/|/
-                                     ______/ /
-                                     '------'
-                       _   _        _  ___
-             _ __  ___| |_| |_ _  _| ||   \ _ _ __ _ __ _ ___ _ _
-            | '  \/ -_)  _| ' \ || | || |) | '_/ _` / _` / _ \ ' \
-            |_|_|_\___|\__|_||_\_, |_||___/|_| \__,_\__, \___/_||_|
-                               |__/                 |___/
-            -------------------------------------------------------
-                           github.com/methylDragon
-
-References/Adapted From:
-https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
-
-Description:
-This script runs a motion detector! It detects transient motion in a room
-and said movement is large enough, and recent enough, reports that there is
-motion!
-
-Run the script with a working webcam! You'll see how it works!
-"""
 
 import imutils
 import cv2
 import numpy as np
+import sys
+import socketio
+import rsa
+import base64 
+
 
 # =============================================================================
 # USER-SET PARAMETERS
@@ -55,6 +28,8 @@ MOVEMENT_DETECTED_PERSISTENCE = 100
 # CORE PROGRAM
 # =============================================================================
 
+io = socketio.Client()
+io.connect('http://localhost:8080')
 
 # Create capture object
 cap = cv2.VideoCapture(5) # Flush the stream
@@ -69,6 +44,9 @@ next_frame = None
 font = cv2.FONT_HERSHEY_SIMPLEX
 delay_counter = 0
 movement_persistent_counter = 0
+
+cascPath = sys.argv[0].replace("main.py","haarcascade_frontalface_default.xml")
+faceCascade = cv2.CascadeClassifier(cascPath)
 
 # LOOP!
 while True:
@@ -108,6 +86,14 @@ while True:
         
     # Set the next frame to compare (the current frame)
     next_frame = gray
+    # Face detection
+    faces = faceCascade.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(30, 30),
+        flags=cv2.FONT_HERSHEY_SIMPLEX
+    )
 
     # Compare the two frames, find the difference
     frame_delta = cv2.absdiff(first_frame, next_frame)
@@ -129,7 +115,11 @@ while True:
             transient_movement_flag = True
             
             # Draw a rectangle around big enough movements
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    
+    # # Draw a rectangle around the faces
+    # for (x, y, w, h) in faces:
+    #     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
     # The moment something moves momentarily, reset the persistent
     # movement timer.
@@ -144,11 +134,14 @@ while True:
         movement_persistent_counter -= 1
     else:
         text = "No Movement Detected"
+    
+    if len(faces) > 0:
+        text += " Faces: " + str(len(faces))
+    else:
+        text += "No faces found"
 
     # Print the text on the screen, and display the raw and processed video 
-    # feeds
-    cv2.putText(frame, str(text), (10,35), font, 0.75, (255,255,255), 2, cv2.LINE_AA)
-    
+    # feeds    
     # For if you want to show the individual video frames
 #    cv2.imshow("frame", frame)
 #    cv2.imshow("delta", frame_delta)
@@ -157,13 +150,20 @@ while True:
     frame_delta = cv2.cvtColor(frame_delta, cv2.COLOR_GRAY2BGR)
 
     # Splice the two video frames together to make one long horizontal one
-    cv2.imshow("frame", np.hstack((frame_delta, frame)))
-
+    #cv2.imshow("frame", np.hstack((frame_delta, frame)))
 
     # Interrupt trigger by pressing q to quit the open CV program
     ch = cv2.waitKey(1)
     if ch & 0xFF == ord('q'):
         break
+
+    print("error")
+
+    io.emit("data", {
+        "faces": len(faces),
+        "movement" : movement_persistent_counter,
+        # "image:base64" : 
+    })
 
 # Cleanup when closed
 cv2.waitKey(0)

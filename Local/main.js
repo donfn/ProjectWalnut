@@ -1,8 +1,13 @@
+process.env.APIPort = 8080
+
+const brain = require("./core/modules/js/brain")
+
+require("./core/modules/js/APIServer")(brain)
+require("./core/modules/js/moduleInitialize")
+
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
-const lights = require("./core/lights")
-// require("./core/camera")
 
 function createWindow () {
   // Create the browser window.
@@ -37,11 +42,10 @@ app.whenReady().then(() => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
-  // On macOS it is common for applications and their menu bar
+  // On macOS it is common for applications and their menu barn
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') app.quit()
 })
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-lights.on()
