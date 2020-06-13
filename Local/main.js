@@ -3,7 +3,6 @@ process.env.APIPort = 8080
 const brain = require("./core/modules/js/brain")
 
 require("./core/modules/js/APIServer")(brain)
-require("./core/modules/js/moduleInitialize")
 
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')

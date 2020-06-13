@@ -160,6 +160,7 @@ while True:
     print("error")
 
     io.emit("data", {
+        "dataType": "camera",
         "faces": len(faces),
         "movement" : movement_persistent_counter,
         # "image:base64" : 
