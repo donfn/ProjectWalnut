@@ -1,7 +1,4 @@
 const {PythonShell} = require("python-shell");
-
-
-
  
 let options = {
   mode: 'text',

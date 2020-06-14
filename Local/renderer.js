@@ -5,4 +5,11 @@
 // selectively enable features needed in the rendering
 // process.
 
-const lights = require("./core/lights")
+const io = require("socket.io-client")("https://localhost:8080")
+const $ = require("jquery")
+
+io.on("connect", ()=>{
+    io.on("risk", risk=>{
+        $("#risk").html(risk)
+    })
+})

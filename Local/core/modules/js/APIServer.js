@@ -8,9 +8,13 @@ module.exports = (brain) =>{
 
     process.env.publicKey = keys.exportKey("pkcs1-public")
 
-    io.on("connection", client => client.on("data",  data => brain.feed(data)) )
+    io.on("connection", client => client.on("data",  data => { 
+        let risk = brain.feed(data)
+        io.emit("risk", risk)
+    }))
 
     http.listen(process.env.APIPort, () => {
         console.log(`Started the dataAPI server at port ${process.env.APIPort}`);
+        brain.socket(io)
     })
 }

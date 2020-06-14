@@ -34,7 +34,7 @@ io.connect('http://localhost:8080')
 # Create capture object
 cap = cv2.VideoCapture(5) # Flush the stream
 cap.release()
-cap = cv2.VideoCapture(0) # Then start the webcam
+cap = cv2.VideoCapture(2) # Then start the webcam
 
 # Init frame variables
 first_frame = None
@@ -66,7 +66,14 @@ while True:
     # Resize and save a greyscale version of the image
     frame = imutils.resize(frame, width = 750)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+    # Face detection
+    faces = faceCascade.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(30, 30),
+        flags=cv2.FONT_HERSHEY_SIMPLEX
+    )
     # Blur it to remove camera noise (reducing false positives)
     gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
@@ -86,14 +93,7 @@ while True:
         
     # Set the next frame to compare (the current frame)
     next_frame = gray
-    # Face detection
-    faces = faceCascade.detectMultiScale(
-        gray,
-        scaleFactor=1.1,
-        minNeighbors=5,
-        minSize=(30, 30),
-        flags=cv2.FONT_HERSHEY_SIMPLEX
-    )
+
 
     # Compare the two frames, find the difference
     frame_delta = cv2.absdiff(first_frame, next_frame)
@@ -115,11 +115,11 @@ while True:
             transient_movement_flag = True
             
             # Draw a rectangle around big enough movements
-            # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
     
-    # # Draw a rectangle around the faces
-    # for (x, y, w, h) in faces:
-    #     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    # Draw a rectangle around the faces
+    for (x, y, w, h) in faces:
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
     # The moment something moves momentarily, reset the persistent
     # movement timer.
@@ -131,7 +131,7 @@ while True:
     # was detected    
     if movement_persistent_counter > 0:
         text = "Movement Detected " + str(movement_persistent_counter)
-        movement_persistent_counter -= 1
+        movement_persistent_counter -= 3
     else:
         text = "No Movement Detected"
     
@@ -142,15 +142,17 @@ while True:
 
     # Print the text on the screen, and display the raw and processed video 
     # feeds    
+    cv2.putText(frame, str(text), (10,35), font, 0.75, (255,255,255), 2, cv2.LINE_AA)
+
     # For if you want to show the individual video frames
-#    cv2.imshow("frame", frame)
-#    cv2.imshow("delta", frame_delta)
+    # cv2.imshow("frame", frame)
+    # cv2.imshow("delta", frame_delta)
     
     # Convert the frame_delta to color for splicing
     frame_delta = cv2.cvtColor(frame_delta, cv2.COLOR_GRAY2BGR)
 
     # Splice the two video frames together to make one long horizontal one
-    #cv2.imshow("frame", np.hstack((frame_delta, frame)))
+    cv2.imshow("frame", np.hstack((frame_delta, frame)))
 
     # Interrupt trigger by pressing q to quit the open CV program
     ch = cv2.waitKey(1)

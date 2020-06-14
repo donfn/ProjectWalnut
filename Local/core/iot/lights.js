@@ -67,15 +67,18 @@ module.exports = {
         module.exports.testConnection().then(()=>{
             return new Promise((complete, failed)=>{
             if(lights == "all") lights = Object.keys(bridge.lights)
-            if(typeof lights !== Array) lights = [lights]
+            // if(typeof lights !== Array) lights = [lights]
 
-            percentage = percentage*254/100
+            // console.log(lights)
+            percentage = Math.floor(percentage*254/100)
+            console.log(percentage)
             lights.map(light=>{
                 if(typeof light == String) for(_light in bridge.lights) if(bridge.lights[_light]['name'] == light) light == _light
                 else light = parseInt(light)
                 axios.put(`http://${bridge.address}/api/${bridge.token}/lights/${light}/state`,{
                     on: state,
-                    bri: percentage
+                    bri: percentage,
+                    transitiontime: 0
                 })
                 .then(complete())
                 .catch(e=>failed())
