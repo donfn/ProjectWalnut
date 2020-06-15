@@ -21,14 +21,14 @@ module.exports = {
         if(!armed) return
 
         if(data.dataType == "camera"){
-            let factor = data.movement + data.faces*0.2
+            let factor = data.movement
             if(factor > 70){
                 risk += factor**0.5
 
                 if(risk >= 100) risk = 100
 
                 if(!lightSwitch){
-                    lights.on(30)
+                    lights.on(100,[1,3,4])
                     lightSwitch = true
                     
                     armed = false
