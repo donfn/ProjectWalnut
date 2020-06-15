@@ -1,0 +1,11 @@
+version: "3.4"
+services:
+  project_walnut:
+    container_name: core
+    build: './core'
+    ports:
+      - "8080:8080/tcp"
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+    restart: unless-stopped
