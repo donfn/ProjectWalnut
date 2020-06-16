@@ -20,6 +20,4 @@ const cloudConfig = db.collection('misc').doc("config")
 const brain = require("./core/modules/js/brain")(cloudConfig)
 require("./core/modules/js/APIServer")(brain)
 
-brain.arm() 
-
 process.on('unhandledRejection', r => {})
