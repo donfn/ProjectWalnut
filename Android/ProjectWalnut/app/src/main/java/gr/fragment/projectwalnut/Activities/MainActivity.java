@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import gr.fragment.projectwalnut.Core.API;
 import gr.fragment.projectwalnut.Events.Entrance;
 import gr.fragment.projectwalnut.Events.Event;
 import gr.fragment.projectwalnut.Events.Intrusion;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gr.fragment.projectwalnut.Core.System.init(this);
+        API.init("test@test.com", "test123");
+        API.getData();
 
         for (int i=0; i < 5; i++){
             items.add(new Entrance("", "Stayros entered the house", "Sun 14 Sept 17:32", "Stayros Kiagias"));
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked) arm_text.setText(R.string.system_armed);
             else arm_text.setText(R.string.system_disarmed);
-            system_change(isChecked);
+            API.armHouse(isChecked);
         });
 
         //RecyclerView Settings
@@ -92,10 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-    }
-
-    private void system_change(boolean armed){
 
     }
 

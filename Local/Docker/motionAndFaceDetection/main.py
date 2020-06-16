@@ -29,12 +29,12 @@ MOVEMENT_DETECTED_PERSISTENCE = 100
 # =============================================================================
 
 io = socketio.Client()
-io.connect('http://localhost:8080')
+io.connect('http://192.168.1.6:8080')
 
 # Create capture object
 cap = cv2.VideoCapture(5) # Flush the stream
 cap.release()
-cap = cv2.VideoCapture(2) # Then start the webcam
+cap = cv2.VideoCapture(0) # Then start the webcam
 
 # Init frame variables
 first_frame = None

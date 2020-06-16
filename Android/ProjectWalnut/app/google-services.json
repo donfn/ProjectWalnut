@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "590779952993",
+    "firebase_url": "https://projectwalnut-720aa.firebaseio.com",
+    "project_id": "projectwalnut-720aa",
+    "storage_bucket": "projectwalnut-720aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590779952993:android:ffb2a1d370baa7d0181f20",
+        "android_client_info": {
+          "package_name": "gr.fragment.projectwalnut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590779952993-amugki47kpdv4b0qdtgsue7n5u7hlk5k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwRek0net7Vc61BVYG73PmjXvVlsVzl7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590779952993-amugki47kpdv4b0qdtgsue7n5u7hlk5k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
