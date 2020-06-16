@@ -1,9 +1,12 @@
 var risk = 1
-var armed = false
+var halted = false
 var triggered = false
 var lightSwitch = false
 var io
 var cloudConfig
+var armed = false
+var halted = true
+var lights
 
 const startCountdown = (time)=>{
     // if(triggered == true) return
@@ -18,33 +21,57 @@ const startCountdown = (time)=>{
 }
 
 const decide = () => {
-    if(!armed) return
+    if(halted) return
     if(risk > 70){
         console.log("INTRUSION!")
     }
 }
 
+const watchForUpdate = () =>{
+    cloudConfig.onSnapshot(update=>{
+        update = update.data()
+        if(!armed){
+            if(update.armed) arm()
+        }else{
+            if(!update.armed) disarm()
+        }
+    })
+}
+
+const arm = async (seconds = 0)=>{
+    lights.off()
+    // lights.on(3, [2])
+    startCountdown(seconds)
+        .then(()=>{
+            console.log("ℹ️ Security system armed")
+            armed = true
+            halted = false
+        })
+}
+
+const disarm = async () => {
+    console.log("ℹ️ Security system disarmed")
+    armed = false
+    halted = true
+}
+
 module.exports = (config) => {
     cloudConfig = config
+    lights = require("../../iot/lights")(cloudConfig)
 
-    const lights = require("../../iot/lights")(cloudConfig)
-    lights.connect()
+
+    lights.connect().then(()=>{
+        watchForUpdate()
+    })
 
     return {
         socket: (socket)=>{
             io = socket
         },
-        arm: () => {
-            lights.off()
-            // lights.on(3, [2])
-            startCountdown(5)
-                .then(()=>{
-                    console.log("ℹ️ Security system armed")
-                    armed = true
-                })
-        },
+        arm: arm,
+        disarm: disarm,
         feed: (data) => {
-            if(!armed) return
+            if(halted) return
 
             if(data.dataType == "camera"){
                 let factor = data.movement
@@ -57,10 +84,10 @@ module.exports = (config) => {
                         lights.on(100,[1,3,4])
                         lightSwitch = true
                         
-                        armed = false
+                        halted = false
                         startCountdown(2.5)
                         .then(()=>{
-                            armed = true
+                            halted = true
                         })
                     }
                 }else{
@@ -69,10 +96,10 @@ module.exports = (config) => {
 
                     if(lightSwitch){
                         lightSwitch = false
-                        armed = false
+                        halted = false
                         startCountdown(3.5)                    
                             .then(()=>{
-                                armed = true
+                                halted = true
                             })
 
                         lights.off()
@@ -80,20 +107,18 @@ module.exports = (config) => {
 
                         // startCountdown(120)                    
                         //     .then(()=>{
-                        //         armed=false
+                        //         halted=false
                         //         lights.off()
                         //         startCountdown(3.5)                    
                         //             .then(()=>{
-                        //                 armed = true
+                        //                 halted = true
                         //             })
 
                         //     })
                     }
                 }
             }
-
-            console.log(risk)
-            decide(data.motion)
+            decide()
         }
     }
 }
