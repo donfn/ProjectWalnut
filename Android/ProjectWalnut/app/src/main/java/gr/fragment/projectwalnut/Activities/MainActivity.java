@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gr.fragment.projectwalnut.Core.System.init(this);
+
         API.init("test@test.com", "test123");
-        API.getData();
 
         for (int i=0; i < 5; i++){
             items.add(new Entrance("", "Stayros entered the house", "Sun 14 Sept 17:32", "Stayros Kiagias"));
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         TextView arm_text = findViewById(R.id.arm_text);
         RecyclerView recyclerView = findViewById(R.id.recycle_view);
 
+        switchCompat.setChecked(API.getArmed());
         switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked) arm_text.setText(R.string.system_armed);
             else arm_text.setText(R.string.system_disarmed);
@@ -86,12 +87,9 @@ public class MainActivity extends AppCompatActivity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0) {
                     // Scrolling up
-                    Intent i = new Intent(MainActivity.this, EventsActivity.class);
-                    startActivity(i);
                 }
                 else {
                     // Scrolling down
-
                 }
             }
         });

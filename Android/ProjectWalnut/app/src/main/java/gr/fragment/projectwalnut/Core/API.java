@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 
@@ -25,6 +26,7 @@ import com.google.firestore.v1.WriteResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class API {
@@ -45,7 +47,7 @@ public class API {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.e(TAG, "signInWithEmail:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    user = mAuth.getCurrentUser();
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.e(TAG, "signInWithEmail:failure", task.getException());
@@ -57,12 +59,9 @@ public class API {
         return user;
     }
 
-    public static void armHouse(boolean state){
-        Map<String, Object> data = new HashMap<>();
-        data.put("armed", state);
-
-        db.collection("misc").document("config")
-            .update(data)
+    private static void updateData(String collection, String document, Map<String, Object> values){
+        db.collection(collection).document(document)
+            .update(values)
             .addOnSuccessListener(documentReference -> {
                 Log.e(TAG, "updateArm:success");
                 Toast.makeText(System.mContext, "updateArm:success", Toast.LENGTH_SHORT).show();
@@ -73,17 +72,30 @@ public class API {
             });
     }
 
-    public static void getData(){
-        db.collection("misc").document("config")
-            .get()
-            .addOnCompleteListener((OnCompleteListener<DocumentSnapshot>) task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(System.mContext, ""+task.getResult().getData(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(System.mContext, "NO DATA", Toast.LENGTH_SHORT).show();
+    public static void armHouse(boolean state){
+        Map<String, Object> data = new HashMap<>();
+        data.put("armed", state);
 
-                }
-            });
+        updateData("misc", "config", data);
+    }
+
+    private static Map<String, Object> getData(String collection, String document){
+        final Map<String, Object>[] map = new Map[]{new HashMap<>()};
+
+        db.collection(collection).document(document)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) map[0] = task.getResult().getData();
+                    else map[0] = null;
+                });
+
+        return map[0];
+    }
+
+    public static boolean getArmed(){
+        Map<String, Object> data = getData("misc", "config");
+        Log.e(TAG, ""+data);
+        return false;
     }
 
 }

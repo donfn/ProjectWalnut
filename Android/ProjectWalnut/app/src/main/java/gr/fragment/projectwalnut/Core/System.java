@@ -13,6 +13,9 @@ import androidx.core.content.ContextCompat;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import gr.fragment.projectwalnut.Events.Event;
 
 public class System {
 
@@ -22,8 +25,12 @@ public class System {
     private static PowerManager.WakeLock mWakeLock = null; //A wake lock is a mechanism to indicate that your application needs  to have the device stay on
     public static ConnectivityManager mConnectivityManager = null;
 
+    public static ArrayList<Event> events;
+
+
     public static void init(Context context){
         mContext = context;
+        events = new ArrayList<>();
         Logger.debug("Initializing System...");
 
         mWifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
@@ -120,4 +127,5 @@ public class System {
         sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(sendIntent);
     }
+
 }

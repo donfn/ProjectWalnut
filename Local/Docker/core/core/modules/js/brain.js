@@ -38,6 +38,14 @@ const watchForUpdate = () =>{
     })
 }
 
+// if we arm, disarm from inside the house we use this function to update the database
+//Επισης δεν ξερω που να το καλεσω αυτο διοτι αν το βαλω μεσα στις συναρτησεις arm, disarm τοτε, ΑΑΝΝ ο χρηστης κανει arm, disarm απο πχ την εφαρμογη
+//το firestore θα ειναι ηδη ενημερωμενο και και τοτε εμεις θα κανουμε μια ενημερωση χωρις λογο που πολυ πιθανον να πιασει σαν update η συναρτηση watchForUpdate()
+//αρα θελω να βρεις που θα μπει ωστε να ενημερωνετε το firestore.armed ωστε να να εχουν realtime με τις αλλες συσκευες
+const update_arm = (is_armed) =>{
+    cloudConfig.update({ "armed": is_armed })
+}
+
 const arm = async (seconds = 0)=>{
     lights.off()
     // lights.on(3, [2])
